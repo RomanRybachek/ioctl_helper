@@ -6,8 +6,15 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->listOfDevices->addItem("HEllo");
-    ui->listOfDevices->addItem("Nope");
+
+    std::wstring dir_name(L"\\Device");
+    std::vector<std::wstring> names_of_dir_objects = ioctl_hlpr->enum_directory_objects(dir_name);
+
+    for(int i = 0; i < names_of_dir_objects.size(); i++)
+    {
+        QString obj_name = QString::fromWCharArray(names_of_dir_objects[i].c_str());
+        ui->listOfDevices->addItem(obj_name);
+    }
 }
 
 MainWindow::~MainWindow()

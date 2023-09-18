@@ -17,3 +17,58 @@ ioctl_helper::ioctl_helper()
         exit(2);
 
 }
+
+std::vector<std::wstring> ioctl_helper::enum_directory_objects(std::wstring &dir_name)
+{
+    OBJECT_ATTRIBUTES 			obj_attr;
+    UNICODE_STRING 				dir_str;
+    std::vector<std::wstring> 	dir_vector;
+
+    HANDLE 		dir_handle 	= NULL;
+    NTSTATUS 	status 		= 0;
+    WCHAR 		*str_buf	= (WCHAR *)malloc(dir_name.length() * 2 + 2);
+
+    wcscpy(str_buf, dir_name.data());
+    dir_str.Buffer 			= str_buf;
+    dir_str.Length 			= wcslen(dir_str.Buffer) * 2;
+    dir_str.MaximumLength 	= dir_str.Length;
+
+    InitializeObjectAttributes(&obj_attr, &dir_str, 0, NULL, NULL);
+
+    status = this->NtOpenDirectoryObject(&dir_handle, 0x0001, &obj_attr);
+
+    NTSTATUS query_status 						= STATUS_MORE_ENTRIES;
+    ULONG dir_buffer_size 						= 0x100;
+    ULONG context 								= 0;
+    ULONG prev_context 							= 0;
+    ULONG ret_length 							= 0;
+    bool first_time 							= true;
+    POBJECT_DIRECTORY_INFORMATION dir_buffer 	= (POBJECT_DIRECTORY_INFORMATION)malloc(dir_buffer_size);
+
+    while (query_status == STATUS_MORE_ENTRIES){
+
+        query_status = this->NtQueryDirectoryObject(dir_handle, dir_buffer, dir_buffer_size, false, first_time, &context, &ret_length);
+
+        while (dir_buffer->Name.Buffer == NULL){
+//            std::wcout << std::wstring(L"-------- mul 2 --------") << std::endl;
+            context = prev_context;
+            dir_buffer_size *= 2;
+            free(dir_buffer);
+            dir_buffer = (POBJECT_DIRECTORY_INFORMATION)malloc(dir_buffer_size);
+            query_status = this->NtQueryDirectoryObject(dir_handle, dir_buffer, dir_buffer_size, false, first_time, &context, &ret_length);
+        }
+
+        first_time = false;
+
+        POBJECT_DIRECTORY_INFORMATION dir_iter = dir_buffer;
+        while (dir_iter->Name.Buffer != NULL){
+            dir_vector.push_back(std::wstring(dir_iter->Name.Buffer));
+//            std::wcout << dir_vector.back() << L" " << context << std::endl;
+            dir_iter++;
+        }
+        prev_context = context;
+    }
+    free(str_buf);
+    free(dir_buffer);
+    return dir_vector;
+}
