@@ -21,8 +21,8 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>10</y>
-      <width>271</width>
+      <y>0</y>
+      <width>321</width>
       <height>341</height>
      </rect>
     </property>
@@ -49,7 +49,18 @@
       </layout>
      </item>
      <item>
-      <widget class="QListWidget" name="listOfDevices"/>
+      <widget class="QTableWidget" name="tableOfObjects">
+       <column>
+        <property name="text">
+         <string>Name</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Type</string>
+        </property>
+       </column>
+      </widget>
      </item>
     </layout>
    </widget>

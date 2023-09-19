@@ -27,7 +27,7 @@ class ioctl_helper
 {
 public:
     ioctl_helper();
-    std::vector<std::wstring> enum_directory_objects(std::wstring &dir_name);
+    std::vector<std::pair<std::wstring, std::wstring>> enum_directory_objects(std::wstring &dir_name);
 private:
     HMODULE ntdll_hanlde;
 

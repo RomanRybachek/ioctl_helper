@@ -24,6 +24,8 @@ private slots:
 
     void on_findDeviceButton_clicked();
 
+    void on_tableOfObjects_cellClicked(int row, int column);
+
 private:
     Ui::MainWindow *ui;
 };

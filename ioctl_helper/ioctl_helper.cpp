@@ -18,14 +18,13 @@ ioctl_helper::ioctl_helper()
 
 }
 
-std::vector<std::wstring> ioctl_helper::enum_directory_objects(std::wstring &dir_name)
+std::vector<std::pair<std::wstring, std::wstring>> ioctl_helper::enum_directory_objects(std::wstring &dir_name)
 {
     OBJECT_ATTRIBUTES 			obj_attr;
     UNICODE_STRING 				dir_str;
-    std::vector<std::wstring> 	dir_vector;
+    std::vector<std::pair<std::wstring, std::wstring>> 	dir_vector;
 
     HANDLE 		dir_handle 	= NULL;
-    NTSTATUS 	status 		= 0;
     WCHAR 		*str_buf	= (WCHAR *)malloc(dir_name.length() * 2 + 2);
 
     wcscpy(str_buf, dir_name.data());
@@ -35,7 +34,7 @@ std::vector<std::wstring> ioctl_helper::enum_directory_objects(std::wstring &dir
 
     InitializeObjectAttributes(&obj_attr, &dir_str, 0, NULL, NULL);
 
-    status = this->NtOpenDirectoryObject(&dir_handle, 0x0001, &obj_attr);
+    this->NtOpenDirectoryObject(&dir_handle, 0x0001, &obj_attr);
 
     NTSTATUS query_status 						= STATUS_MORE_ENTRIES;
     ULONG dir_buffer_size 						= 0x100;
@@ -61,8 +60,11 @@ std::vector<std::wstring> ioctl_helper::enum_directory_objects(std::wstring &dir
         first_time = false;
 
         POBJECT_DIRECTORY_INFORMATION dir_iter = dir_buffer;
+
+
         while (dir_iter->Name.Buffer != NULL){
-            dir_vector.push_back(std::wstring(dir_iter->Name.Buffer));
+            std::pair<std::wstring, std::wstring> pair_name_type(dir_iter->Name.Buffer, dir_iter->TypeName.Buffer);
+            dir_vector.push_back(pair_name_type);
 //            std::wcout << dir_vector.back() << L" " << context << std::endl;
             dir_iter++;
         }
