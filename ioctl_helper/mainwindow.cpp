@@ -6,7 +6,7 @@ void MainWindow::FillTableOfObjects(dir_obj_pair &names_of_dir_objects){
 
     ui->tableOfObjects->setRowCount(0);
 
-    for(int i = 0; i < names_of_dir_objects.size() - 1; i++)
+    for(int i = 0; i < names_of_dir_objects.size(); i++)
     {
         QString obj_name = QString::fromWCharArray(names_of_dir_objects[i].first.c_str());
         QString obj_type = QString::fromWCharArray(names_of_dir_objects[i].second.c_str());
@@ -27,6 +27,9 @@ MainWindow::MainWindow(QWidget *parent)
     this->dir_name = std::wstring(L"\\GLOBAL??");
     this->dir_objs = ioctl_hlpr->enum_directory_objects(this->dir_name);
     this->FillTableOfObjects(this->dir_objs);
+    ui->tableOfObjects->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+//    ui->tableOfObjects->setColumnWidth(0, ui->tableOfObjects->width() / 3 * 2);
+//    ui->tableOfObjects->setColumnWidth(1, ui->tableOfObjects->width() / 3);
 }
 
 MainWindow::~MainWindow()
@@ -51,14 +54,32 @@ void MainWindow::on_refreshDeviceButton_clicked()
     this->FillTableOfObjects(this->dir_objs);
 }
 
-void MainWindow::on_findDeviceButton_clicked()
-{
-    ui->tableOfObjects->setRowCount(0);
-//    QString pattern = ui->findDeviceButton->text();
-//    dir_obj_pair found_objs;
-//    dir_obj_pair &dir_objs = this->dir_objs;
+void MainWindow::FindObject(){
 
+    std::wstring pattern = ui->findDeviceLineEdit->text().toStdWString();
+    std::transform(pattern.begin(), pattern.end(), pattern.begin(), ::tolower);
+    dir_obj_pair found_objs;
+    dir_obj_pair &dir_objs = this->dir_objs;
+
+    for (int i = 0; i < dir_objs.size(); i++)
+    {
+        std::wstring cur = dir_objs[i].first;
+        std::transform(cur.begin(), cur.end(), cur.begin(), ::tolower);
+        if (cur.find(pattern) != std::wstring::npos){
+            found_objs.push_back(dir_objs[i]);
+        }
+    }
+
+    this->FillTableOfObjects(found_objs);
 }
 
+void MainWindow::on_findDeviceButton_clicked()
+{
+    this->FindObject();
+}
 
+void MainWindow::on_findDeviceLineEdit_returnPressed()
+{
+    this->FindObject();
+}
 

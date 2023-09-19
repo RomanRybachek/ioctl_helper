@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>773</width>
-    <height>399</height>
+    <width>932</width>
+    <height>558</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,8 +22,8 @@
      <rect>
       <x>20</x>
       <y>0</y>
-      <width>321</width>
-      <height>341</height>
+      <width>451</width>
+      <height>511</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -67,7 +67,7 @@
    <widget class="QLineEdit" name="curDeviceLineEdit">
     <property name="geometry">
      <rect>
-      <x>380</x>
+      <x>650</x>
       <y>10</y>
       <width>231</width>
       <height>24</height>
@@ -83,7 +83,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>773</width>
+     <width>932</width>
      <height>21</height>
     </rect>
    </property>

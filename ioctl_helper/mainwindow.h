@@ -28,8 +28,11 @@ private slots:
 
     void on_tableOfObjects_cellClicked(int row, int column);
 
+    void on_findDeviceLineEdit_returnPressed();
+
 private:
     Ui::MainWindow *ui;
     void FillTableOfObjects(dir_obj_pair &names_of_dir_objects);
+    void FindObject();
 };
 #endif // MAINWINDOW_H
