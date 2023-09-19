@@ -9,11 +9,13 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <winternl.h>
 
 typedef NTSTATUS (CALLBACK* NTQUERYDIRECTORYOBJECT)(HANDLE, PVOID, ULONG, BOOLEAN, BOOLEAN, PULONG, PULONG);
 typedef NTSTATUS (CALLBACK* NTOPENDIRECTORYOBJECT)(PHANDLE, ACCESS_MASK, POBJECT_ATTRIBUTES);
 typedef NTSTATUS (CALLBACK* NTOPENSYMBOLIClINKOBJECT)(PHANDLE, ACCESS_MASK, POBJECT_ATTRIBUTES);
 typedef NTSTATUS (CALLBACK* NTQUERYSYMBOLIClINKOBJECT)(HANDLE, PUNICODE_STRING, PULONG);
+typedef NTSTATUS (CALLBACK* NTCLOSE)(HANDLE);
 
 typedef struct _OBJECT_DIRECTORY_INFORMATION {
     UNICODE_STRING Name;
@@ -21,13 +23,17 @@ typedef struct _OBJECT_DIRECTORY_INFORMATION {
 } OBJECT_DIRECTORY_INFORMATION, *POBJECT_DIRECTORY_INFORMATION;
 
 #define DIRECTORY_QUERY 0x0001
+typedef std::vector<std::pair<std::wstring, std::wstring>> dir_obj_pair;
 //#define STATUS_MORE_ENTRIES ((NTSTATUS)0x00000105L)
 
 class ioctl_helper
 {
+
 public:
     ioctl_helper();
-    std::vector<std::pair<std::wstring, std::wstring>> enum_directory_objects(std::wstring &dir_name);
+    dir_obj_pair enum_directory_objects(std::wstring dir_name);
+
+
 private:
     HMODULE ntdll_hanlde;
 
@@ -54,6 +60,8 @@ private:
         HANDLE          LinkHandle,
         PUNICODE_STRING LinkTarget,
         PULONG          ReturnedLength);
+
+    NTSTATUS (*NtClose)(HANDLE handle);
 };
 
 #endif // IOCTL_HELPER_H
