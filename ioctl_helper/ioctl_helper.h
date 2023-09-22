@@ -10,6 +10,7 @@
 #include <string>
 #include <iostream>
 #include <winternl.h>
+#include <fileapi.h>
 
 typedef NTSTATUS (CALLBACK* NTQUERYDIRECTORYOBJECT)(HANDLE, PVOID, ULONG, BOOLEAN, BOOLEAN, PULONG, PULONG);
 typedef NTSTATUS (CALLBACK* NTOPENDIRECTORYOBJECT)(PHANDLE, ACCESS_MASK, POBJECT_ATTRIBUTES);
@@ -30,8 +31,12 @@ class ioctl_helper
 {
 
 public:
+    std::vector<HANDLE> handles;
+
     ioctl_helper();
+    ~ioctl_helper();
     dir_obj_pair enum_directory_objects(std::wstring dir_name);
+    void get_device_handle(std::wstring device_name);
 
 
 private:

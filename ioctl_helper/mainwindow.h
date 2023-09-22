@@ -30,6 +30,8 @@ private slots:
 
     void on_findDeviceLineEdit_returnPressed();
 
+    void on_CreateDevicePushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     void FillTableOfObjects(dir_obj_pair &names_of_dir_objects);

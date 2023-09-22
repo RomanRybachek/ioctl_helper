@@ -19,6 +19,10 @@ ioctl_helper::ioctl_helper()
         exit(2);
 }
 
+ioctl_helper::~ioctl_helper(){
+
+}
+
 dir_obj_pair ioctl_helper::enum_directory_objects(std::wstring dir_name)
 {
     OBJECT_ATTRIBUTES 			obj_attr;
@@ -72,4 +76,8 @@ dir_obj_pair ioctl_helper::enum_directory_objects(std::wstring dir_name)
     std::sort(dir_vector.begin(), dir_vector.end());
     this->NtClose(dir_handle);
     return dir_vector;
+}
+
+void ioctl_helper::get_device_handle(std::wstring device_name){
+//    CreateFileW(device_name.c_str(), )
 }

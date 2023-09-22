@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include <QTableWidget>
+#include <QCheckBox>
 
 void MainWindow::FillTableOfObjects(dir_obj_pair &names_of_dir_objects){
 
@@ -81,5 +82,21 @@ void MainWindow::on_findDeviceButton_clicked()
 void MainWindow::on_findDeviceLineEdit_returnPressed()
 {
     this->FindObject();
+}
+
+
+void MainWindow::on_CreateDevicePushButton_clicked()
+{
+    DWORD dwDesiredAccess = 0;
+
+    if (ui->writeCheckBox->isChecked())
+        ui->dbgLineEdit->setText(QString("w"));
+    if (ui->readCheckBox->isChecked())
+        ui->dbgLineEdit->setText(QString("r"));
+    if (ui->execCheckBox->isChecked())
+        ui->dbgLineEdit->setText(QString("e"));
+//    ui->readCheckBox
+//    ui->execCheckBox
+//    CreateFileW(device_name.c_str(), )
 }
 
