@@ -11,6 +11,8 @@
 #include <iostream>
 #include <winternl.h>
 #include <fileapi.h>
+#include <iomanip>
+#include "utils.h"
 
 typedef NTSTATUS (CALLBACK* NTQUERYDIRECTORYOBJECT)(HANDLE, PVOID, ULONG, BOOLEAN, BOOLEAN, PULONG, PULONG);
 typedef NTSTATUS (CALLBACK* NTOPENDIRECTORYOBJECT)(PHANDLE, ACCESS_MASK, POBJECT_ATTRIBUTES);
@@ -24,20 +26,21 @@ typedef struct _OBJECT_DIRECTORY_INFORMATION {
 } OBJECT_DIRECTORY_INFORMATION, *POBJECT_DIRECTORY_INFORMATION;
 
 #define DIRECTORY_QUERY 0x0001
-typedef std::vector<std::pair<std::wstring, std::wstring>> dir_obj_pair;
+typedef std::vector<std::pair<std::wstring, std::wstring>> dir_obj_pairs;
+typedef std::vector<std::pair<std::wstring, HANDLE>> opened_device_pairs;
 //#define STATUS_MORE_ENTRIES ((NTSTATUS)0x00000105L)
 
 class ioctl_helper
 {
 
 public:
-    std::vector<HANDLE> handles;
+    opened_device_pairs handles;
 
     ioctl_helper();
     ~ioctl_helper();
-    dir_obj_pair enum_directory_objects(std::wstring dir_name);
+    dir_obj_pairs enum_directory_objects(std::wstring dir_name);
     void get_device_handle(std::wstring device_name);
-
+    HANDLE open_device(std::wstring name, DWORD dwDesiredAccess);
 
 private:
     HMODULE ntdll_hanlde;

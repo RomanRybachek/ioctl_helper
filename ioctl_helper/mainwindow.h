@@ -18,7 +18,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    dir_obj_pair dir_objs;
+    dir_obj_pairs dir_objs;
     std::wstring dir_name;
 
 private slots:
@@ -32,9 +32,15 @@ private slots:
 
     void on_CreateDevicePushButton_clicked();
 
+    void on_openedDevicesTableWidget_cellClicked(int row, int column);
+
+    void on_closeDevicePushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
-    void FillTableOfObjects(dir_obj_pair &names_of_dir_objects);
+    void FillTableOfObjects(dir_obj_pairs &names_of_dir_objects);
+    void FillOpenedDevicesTable(opened_device_pairs &hanldes_and_names);
     void FindObject();
+    void ErrorToOutput();
 };
 #endif // MAINWINDOW_H

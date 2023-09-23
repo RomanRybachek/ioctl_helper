@@ -23,11 +23,11 @@ ioctl_helper::~ioctl_helper(){
 
 }
 
-dir_obj_pair ioctl_helper::enum_directory_objects(std::wstring dir_name)
+dir_obj_pairs ioctl_helper::enum_directory_objects(std::wstring dir_name)
 {
     OBJECT_ATTRIBUTES 			obj_attr;
     UNICODE_STRING 				dir_str;
-    dir_obj_pair 				dir_vector;
+    dir_obj_pairs 				dir_vector;
 
     HANDLE 		dir_handle 	= NULL;
     WCHAR 		*str_buf	= (WCHAR *)malloc(dir_name.length() * 2 + 2);
@@ -78,6 +78,15 @@ dir_obj_pair ioctl_helper::enum_directory_objects(std::wstring dir_name)
     return dir_vector;
 }
 
-void ioctl_helper::get_device_handle(std::wstring device_name){
-//    CreateFileW(device_name.c_str(), )
+HANDLE ioctl_helper::open_device(std::wstring name, DWORD dwDesiredAccess){
+
+    DWORD 	dwShareMode 		= FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE;
+    HANDLE 	opened_device		= NULL;
+
+    opened_device = CreateFileW(name.c_str(), dwDesiredAccess, dwShareMode, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+    if ((long long)opened_device > 0){
+        std::pair<std::wstring, HANDLE> new_opened_device_pair(name, opened_device);
+        this->handles.push_back(new_opened_device_pair);
+    }
+    return opened_device;
 }

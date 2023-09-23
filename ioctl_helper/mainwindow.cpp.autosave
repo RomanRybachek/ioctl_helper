@@ -50,6 +50,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->FillTableOfObjects(this->dir_objs);
     ui->tableOfObjects->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->openedDevicesTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->outputTextBrowser->setLineHeight
 //    ui->tableOfObjects->setColumnWidth(0, ui->tableOfObjects->width() / 3 * 2);
 //    ui->tableOfObjects->setColumnWidth(1, ui->tableOfObjects->width() / 3);
 }

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>932</width>
+    <width>1065</width>
     <height>558</height>
    </rect>
   </property>
@@ -67,7 +67,7 @@
    <widget class="QLineEdit" name="curDeviceLineEdit">
     <property name="geometry">
      <rect>
-      <x>650</x>
+      <x>830</x>
       <y>10</y>
       <width>231</width>
       <height>24</height>
@@ -80,10 +80,10 @@
    <widget class="QPushButton" name="CreateDevicePushButton">
     <property name="geometry">
      <rect>
-      <x>650</x>
-      <y>90</y>
-      <width>171</width>
-      <height>51</height>
+      <x>830</x>
+      <y>60</y>
+      <width>111</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
@@ -93,7 +93,7 @@
    <widget class="QCheckBox" name="execCheckBox">
     <property name="geometry">
      <rect>
-      <x>730</x>
+      <x>896</x>
       <y>40</y>
       <width>31</width>
       <height>22</height>
@@ -106,7 +106,7 @@
    <widget class="QCheckBox" name="readCheckBox">
     <property name="geometry">
      <rect>
-      <x>650</x>
+      <x>830</x>
       <y>40</y>
       <width>31</width>
       <height>22</height>
@@ -119,7 +119,7 @@
    <widget class="QCheckBox" name="writeCheckBox">
     <property name="geometry">
      <rect>
-      <x>690</x>
+      <x>861</x>
       <y>40</y>
       <width>31</width>
       <height>22</height>
@@ -132,10 +132,53 @@
    <widget class="QLineEdit" name="dbgLineEdit">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>250</y>
-      <width>171</width>
+      <x>790</x>
+      <y>480</y>
+      <width>131</width>
       <height>24</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="closeDevicePushButton">
+    <property name="geometry">
+     <rect>
+      <x>945</x>
+      <y>60</y>
+      <width>51</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>close</string>
+    </property>
+   </widget>
+   <widget class="QTableWidget" name="openedDevicesTableWidget">
+    <property name="geometry">
+     <rect>
+      <x>474</x>
+      <y>0</y>
+      <width>251</width>
+      <height>511</height>
+     </rect>
+    </property>
+    <column>
+     <property name="text">
+      <string>Handle</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Name</string>
+     </property>
+    </column>
+   </widget>
+   <widget class="QTextBrowser" name="outputTextBrowser">
+    <property name="geometry">
+     <rect>
+      <x>730</x>
+      <y>220</y>
+      <width>256</width>
+      <height>192</height>
      </rect>
     </property>
    </widget>
@@ -145,7 +188,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>932</width>
+     <width>1065</width>
      <height>21</height>
     </rect>
    </property>
