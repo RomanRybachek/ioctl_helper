@@ -82,12 +82,12 @@
      <rect>
       <x>830</x>
       <y>60</y>
-      <width>111</width>
+      <width>51</width>
       <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>CreateFileW (open)</string>
+     <string>open</string>
     </property>
    </widget>
    <widget class="QCheckBox" name="execCheckBox">
@@ -142,7 +142,7 @@
    <widget class="QPushButton" name="closeDevicePushButton">
     <property name="geometry">
      <rect>
-      <x>945</x>
+      <x>886</x>
       <y>60</y>
       <width>51</width>
       <height>21</height>
@@ -180,6 +180,19 @@
       <width>256</width>
       <height>192</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="curHandleLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>950</x>
+      <y>40</y>
+      <width>111</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
   </widget>

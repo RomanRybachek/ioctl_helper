@@ -128,6 +128,10 @@ void MainWindow::on_CreateDevicePushButton_clicked()
     }
     else{
         this->FillOpenedDevicesTable(ioctl_hlpr->handles);
+        std::stringstream stream;
+        stream << std::hex << handle;
+        QString text(stream.str().c_str());
+        ui->curHandleLineEdit->setText(text);
     }
 //    QString new_item = QString::fromWCharArray(new_device.first.c_str());
 //    ui->openedDevicesListWidget->addItem(new_item);
@@ -142,22 +146,22 @@ void MainWindow::ErrorToOutput(){
 
 void MainWindow::on_openedDevicesTableWidget_cellClicked(int row, int column)
 {
-    if (column == 1)
-    {
-        QString text = ui->openedDevicesTableWidget->item(row, column)->text();
-        ui->curDeviceLineEdit->setText(text);
-    }
+    QString name = ui->openedDevicesTableWidget->item(row, 1)->text();
+    QString handle = ui->openedDevicesTableWidget->item(row, 0)->text();
+    ui->curDeviceLineEdit->setText(name);
+    ui->curHandleLineEdit->setText(handle);
 }
 
 
 void MainWindow::on_closeDevicePushButton_clicked()
 {
     std::wstring dev_name = ui->curDeviceLineEdit->text().toStdWString();
+    HANDLE handle = (HANDLE)stoi(ui->curHandleLineEdit->text().toStdWString(), 0, 16);
 
     opened_device_pairs &handles = ioctl_hlpr->handles;
 
     for (opened_device_pairs::iterator i = handles.begin(); i != handles.end(); i++){
-        if (i->first == dev_name){
+        if (i->first == dev_name and i->second == handle){
             QString text = QString::fromWCharArray(i->first.c_str());
             ui->dbgLineEdit->setText(text);
             CloseHandle(i->second);
