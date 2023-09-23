@@ -156,8 +156,13 @@ void MainWindow::on_openedDevicesTableWidget_cellClicked(int row, int column)
 void MainWindow::on_closeDevicePushButton_clicked()
 {
     std::wstring dev_name = ui->curDeviceLineEdit->text().toStdWString();
-    HANDLE handle = (HANDLE)stoi(ui->curHandleLineEdit->text().toStdWString(), 0, 16);
+    std::wstring dev_handle = ui->curHandleLineEdit->text().toStdWString();
+    HANDLE handle;
 
+    if (dev_handle.length() == 0)
+        return;
+
+    handle = (HANDLE)stoi(dev_handle, 0, 16);
     opened_device_pairs &handles = ioctl_hlpr->handles;
 
     for (opened_device_pairs::iterator i = handles.begin(); i != handles.end(); i++){
