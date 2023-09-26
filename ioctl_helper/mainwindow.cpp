@@ -39,6 +39,7 @@ void MainWindow::FillOpenedDevicesTable(opened_device_pairs &hanldes_and_names){
     }
 }
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -55,10 +56,20 @@ MainWindow::MainWindow(QWidget *parent)
 //    ui->tableOfObjects->setColumnWidth(1, ui->tableOfObjects->width() / 3);
 
 //    this->write_hex_to_display();
-    QHexEdit *hexEdit = new QHexEdit;
-    hexEdit->setGeometry(800, 400, 600, 300);
-    hexEdit->show();
-    this->layout()->addWidget(hexEdit);
+    QHexEdit *inHexEdit = new QHexEdit;
+    QHexEdit *outHexEdit = new QHexEdit;
+    inHexEdit->setGeometry(0, 400, 600, 300);
+    outHexEdit->setGeometry(600, 400, 600, 300);
+    outHexEdit->setReadOnly(true);
+//    inHexEdit->setReadOnly(false);
+    inHexEdit->setOverwriteMode(false);
+    this->layout()->addWidget(inHexEdit);
+    this->layout()->addWidget(outHexEdit);
+    inHexEdit->show();
+    outHexEdit->show();
+//    QFile file("C:/Users/MtnDew/Projects/ioctl_helper/test_file" );
+//    file.setFileName("C:\\Users\\MtnDew\\Downloads\\QHexEdit_X64\\opengl32sw.dll");
+
 }
 
 MainWindow::~MainWindow()
@@ -105,7 +116,7 @@ void MainWindow::FindObject(){
 void MainWindow::on_findDeviceButton_clicked()
 {
     this->FindObject();
-}
+ }
 
 void MainWindow::on_findDeviceLineEdit_returnPressed()
 {
@@ -174,7 +185,7 @@ void MainWindow::on_closeDevicePushButton_clicked()
 
     for (opened_device_pairs::iterator i = handles.begin(); i != handles.end(); i++){
         if (i->first == dev_name and i->second == handle){
-            QString text = QString::fromWCharArray(i->first.c_str());
+//            QString text = QString::fromWCharArray(i->first.c_str());
             CloseHandle(i->second);
             handles.erase(i);
             this->FillOpenedDevicesTable(handles);
