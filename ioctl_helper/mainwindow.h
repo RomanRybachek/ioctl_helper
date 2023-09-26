@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QListWidgetItem>
 #include "ioctl_helper.h"
+#include "qhexedit/qhexedit.h"
 
 typedef std::vector<std::pair<std::wstring, std::wstring>> bytes_views;
 

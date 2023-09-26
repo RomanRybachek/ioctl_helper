@@ -17,6 +17,12 @@ set(PROJECT_SOURCES
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        qhexedit/qhexedit.h
+        qhexedit/chunks.h
+        qhexedit/commands.h
+        qhexedit/qhexedit.cpp
+        qhexedit/chunks.cpp
+        qhexedit/commands.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

@@ -54,7 +54,11 @@ MainWindow::MainWindow(QWidget *parent)
 //    ui->tableOfObjects->setColumnWidth(0, ui->tableOfObjects->width() / 3 * 2);
 //    ui->tableOfObjects->setColumnWidth(1, ui->tableOfObjects->width() / 3);
 
-    this->write_hex_to_display();
+//    this->write_hex_to_display();
+    QHexEdit *hexEdit = new QHexEdit;
+    hexEdit->setGeometry(800, 400, 600, 300);
+    hexEdit->show();
+    this->layout()->addWidget(hexEdit);
 }
 
 MainWindow::~MainWindow()
@@ -203,25 +207,25 @@ bytes_views MainWindow::parse_memory_with_chars(BYTE *mem, unsigned long long si
 
 void MainWindow::write_hex_to_display(){
 
-    BYTE *mem = (BYTE*)"aaaaaaaaaaaaaaaa";
+//    BYTE *mem = (BYTE*)"aaaaaaaaaaaaaaaa";
 
-    bytes_views mem_view = this->parse_memory_with_chars(mem, strlen((char*)mem) + 100);
+//    bytes_views mem_view = this->parse_memory_with_chars(mem, strlen((char*)mem) + 100);
 
-    for (unsigned long long i = 0; i < mem_view.size(); i++){
+//    for (unsigned long long i = 0; i < mem_view.size(); i++){
 
-        ui->hexOutputPlainTextEdit->insertPlainText(QString::fromWCharArray(mem_view[i].first.c_str()));
-        QString hex_all = ui->hexOutputPlainTextEdit->toPlainText();
-        int new_lines = hex_all.count(L"\n");
-        if (hex_all.length() % (16 * 2 + 15 + new_lines) == 0){
-            ui->hexOutputPlainTextEdit->insertPlainText(QString::fromWCharArray(L"\r"));
-        }
-        else
-            ui->hexOutputPlainTextEdit->insertPlainText(QString::fromWCharArray(L" "));
+//        ui->hexOutputPlainTextEdit->insertPlainText(QString::fromWCharArray(mem_view[i].first.c_str()));
+//        QString hex_all = ui->hexOutputPlainTextEdit->toPlainText();
+//        int new_lines = hex_all.count(L"\n");
+//        if (hex_all.length() % (16 * 2 + 15 + new_lines) == 0){
+//            ui->hexOutputPlainTextEdit->insertPlainText(QString::fromWCharArray(L"\r"));
+//        }
+//        else
+//            ui->hexOutputPlainTextEdit->insertPlainText(QString::fromWCharArray(L" "));
 
-        ui->charOutputPlainTextEdit->insertPlainText(QString::fromWCharArray(mem_view[i].second.c_str()));
-        QString char_all = ui->charOutputPlainTextEdit->toPlainText();
-        if (char_all.length() % 16 == 0){
-            ui->hexOutputPlainTextEdit->insertPlainText(QString::fromWCharArray(L"\n"));
-        }
-    }
+//        ui->charOutputPlainTextEdit->insertPlainText(QString::fromWCharArray(mem_view[i].second.c_str()));
+//        QString char_all = ui->charOutputPlainTextEdit->toPlainText();
+//        if (char_all.length() % 16 == 0){
+//            ui->hexOutputPlainTextEdit->insertPlainText(QString::fromWCharArray(L"\n"));
+//        }
+//    }
 }
