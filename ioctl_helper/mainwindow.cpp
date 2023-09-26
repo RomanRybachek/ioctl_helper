@@ -44,6 +44,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     ioctl_hlpr = new ioctl_helper();
     this->dir_name = std::wstring(L"\\GLOBAL??");
     this->dir_objs = ioctl_hlpr->enum_directory_objects(this->dir_name);
@@ -52,6 +53,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->openedDevicesTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 //    ui->tableOfObjects->setColumnWidth(0, ui->tableOfObjects->width() / 3 * 2);
 //    ui->tableOfObjects->setColumnWidth(1, ui->tableOfObjects->width() / 3);
+
+    this->write_hex_to_display();
 }
 
 MainWindow::~MainWindow()
@@ -168,7 +171,6 @@ void MainWindow::on_closeDevicePushButton_clicked()
     for (opened_device_pairs::iterator i = handles.begin(); i != handles.end(); i++){
         if (i->first == dev_name and i->second == handle){
             QString text = QString::fromWCharArray(i->first.c_str());
-            ui->dbgLineEdit->setText(text);
             CloseHandle(i->second);
             handles.erase(i);
             this->FillOpenedDevicesTable(handles);
@@ -177,3 +179,49 @@ void MainWindow::on_closeDevicePushButton_clicked()
     }
 }
 
+bytes_views MainWindow::parse_memory_with_chars(BYTE *mem, unsigned long long size){
+
+    std::wstringstream stream;
+    bytes_views bytes;
+
+    for (unsigned long long i = 0; i < size; i++){
+        stream << std::hex << mem[i];
+        std::pair<std::wstring, std::wstring> one_byte;
+        one_byte.first = stream.str();
+        if (one_byte.first.length() == 1){
+            one_byte.first = L"0" + one_byte.first;
+        }
+        if (std::isprint(mem[i]))
+            one_byte.second = mem[i];
+        else
+            one_byte.second = '.';
+        bytes.push_back(one_byte);
+        stream.str(L"");
+    }
+    return bytes;
+}
+
+void MainWindow::write_hex_to_display(){
+
+    BYTE *mem = (BYTE*)"aaaaaaaaaaaaaaaa";
+
+    bytes_views mem_view = this->parse_memory_with_chars(mem, strlen((char*)mem) + 100);
+
+    for (unsigned long long i = 0; i < mem_view.size(); i++){
+
+        ui->hexOutputPlainTextEdit->insertPlainText(QString::fromWCharArray(mem_view[i].first.c_str()));
+        QString hex_all = ui->hexOutputPlainTextEdit->toPlainText();
+        int new_lines = hex_all.count(L"\n");
+        if (hex_all.length() % (16 * 2 + 15 + new_lines) == 0){
+            ui->hexOutputPlainTextEdit->insertPlainText(QString::fromWCharArray(L"\r"));
+        }
+        else
+            ui->hexOutputPlainTextEdit->insertPlainText(QString::fromWCharArray(L" "));
+
+        ui->charOutputPlainTextEdit->insertPlainText(QString::fromWCharArray(mem_view[i].second.c_str()));
+        QString char_all = ui->charOutputPlainTextEdit->toPlainText();
+        if (char_all.length() % 16 == 0){
+            ui->hexOutputPlainTextEdit->insertPlainText(QString::fromWCharArray(L"\n"));
+        }
+    }
+}

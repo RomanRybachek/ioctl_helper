@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1065</width>
-    <height>558</height>
+    <width>1458</width>
+    <height>722</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -64,94 +64,6 @@
      </item>
     </layout>
    </widget>
-   <widget class="QLineEdit" name="curDeviceLineEdit">
-    <property name="geometry">
-     <rect>
-      <x>830</x>
-      <y>10</y>
-      <width>231</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="CreateDevicePushButton">
-    <property name="geometry">
-     <rect>
-      <x>830</x>
-      <y>60</y>
-      <width>51</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>open</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="execCheckBox">
-    <property name="geometry">
-     <rect>
-      <x>896</x>
-      <y>40</y>
-      <width>31</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>E</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="readCheckBox">
-    <property name="geometry">
-     <rect>
-      <x>830</x>
-      <y>40</y>
-      <width>31</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>R</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="writeCheckBox">
-    <property name="geometry">
-     <rect>
-      <x>861</x>
-      <y>40</y>
-      <width>31</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>W</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="dbgLineEdit">
-    <property name="geometry">
-     <rect>
-      <x>790</x>
-      <y>480</y>
-      <width>131</width>
-      <height>24</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="closeDevicePushButton">
-    <property name="geometry">
-     <rect>
-      <x>886</x>
-      <y>60</y>
-      <width>51</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>close</string>
-    </property>
-   </widget>
    <widget class="QTableWidget" name="openedDevicesTableWidget">
     <property name="geometry">
      <rect>
@@ -172,26 +84,204 @@
      </property>
     </column>
    </widget>
-   <widget class="QTextBrowser" name="outputTextBrowser">
+   <widget class="QWidget" name="verticalLayoutWidget_4">
     <property name="geometry">
      <rect>
       <x>730</x>
-      <y>220</y>
-      <width>256</width>
-      <height>192</height>
+      <y>0</y>
+      <width>321</width>
+      <height>131</height>
      </rect>
     </property>
+    <layout class="QVBoxLayout" name="verticalLayout_5">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Device:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="curDeviceLineEdit">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QCheckBox" name="writeCheckBox">
+             <property name="text">
+              <string>W</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="readCheckBox">
+             <property name="text">
+              <string>R</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="execCheckBox">
+             <property name="text">
+              <string>E</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QPushButton" name="CreateDevicePushButton">
+             <property name="text">
+              <string>open</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="closeDevicePushButton">
+             <property name="text">
+              <string>close</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="maximumSize">
+            <size>
+             <width>16770000</width>
+             <height>96</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Handle:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="curHandleLineEdit">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+    </layout>
    </widget>
-   <widget class="QLineEdit" name="curHandleLineEdit">
+   <widget class="QWidget" name="verticalLayoutWidget_5">
     <property name="geometry">
      <rect>
-      <x>950</x>
-      <y>40</y>
-      <width>111</width>
-      <height>24</height>
+      <x>730</x>
+      <y>140</y>
+      <width>321</width>
+      <height>211</height>
      </rect>
     </property>
-    <property name="text">
+    <layout class="QVBoxLayout" name="verticalLayout_6">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Output messages:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTextBrowser" name="outputTextBrowser"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QPlainTextEdit" name="hexOutputPlainTextEdit">
+    <property name="geometry">
+     <rect>
+      <x>740</x>
+      <y>410</y>
+      <width>321</width>
+      <height>231</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>1677215</width>
+      <height>16777215</height>
+     </size>
+    </property>
+    <property name="documentTitle">
+     <string/>
+    </property>
+    <property name="lineWrapMode">
+     <enum>QPlainTextEdit::NoWrap</enum>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+    <property name="plainText">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="charOutputPlainTextEdit">
+    <property name="geometry">
+     <rect>
+      <x>1120</x>
+      <y>420</y>
+      <width>191</width>
+      <height>231</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>16777215</width>
+      <height>16777215</height>
+     </size>
+    </property>
+    <property name="documentTitle">
+     <string/>
+    </property>
+    <property name="lineWrapMode">
+     <enum>QPlainTextEdit::NoWrap</enum>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+    <property name="plainText">
      <string/>
     </property>
    </widget>
@@ -201,7 +291,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1065</width>
+     <width>1458</width>
      <height>21</height>
     </rect>
    </property>

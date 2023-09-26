@@ -20,7 +20,11 @@ ioctl_helper::ioctl_helper()
 }
 
 ioctl_helper::~ioctl_helper(){
-
+    if (this->handles.size() != 0){
+        for (int i = 0; i < handles.size(); i++){
+            CloseHandle(handles[i].second);
+        }
+    }
 }
 
 dir_obj_pairs ioctl_helper::enum_directory_objects(std::wstring dir_name)

@@ -5,6 +5,8 @@
 #include <QListWidgetItem>
 #include "ioctl_helper.h"
 
+typedef std::vector<std::pair<std::wstring, std::wstring>> bytes_views;
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -42,5 +44,7 @@ private:
     void FillOpenedDevicesTable(opened_device_pairs &hanldes_and_names);
     void FindObject();
     void ErrorToOutput();
+    bytes_views parse_memory_with_chars(BYTE *mem, unsigned long long size);
+    void write_hex_to_display();
 };
 #endif // MAINWINDOW_H
