@@ -249,6 +249,7 @@ void MainWindow::on_sendIoctlPushButton_clicked()
 
     stream << std::hex << ui->ioctlCodeLineEdit->text().toStdWString();
     stream >> dwIoControlCode;
+    QByteArray inBuffer = this->inHexEdit->dataAt(0, -1);
     return;
 //    DeviceIoControl(handle, );
 }
