@@ -27,8 +27,6 @@ public:
 private slots:
     void on_refreshDeviceButton_clicked();
 
-    void on_findDeviceButton_clicked();
-
     void on_tableOfObjects_cellClicked(int row, int column);
 
     void on_findDeviceLineEdit_returnPressed();
@@ -39,13 +37,23 @@ private slots:
 
     void on_closeDevicePushButton_clicked();
 
+    void on_sendIoctlPushButton_clicked();
+
+    void on_findDeviceLineEdit_textChanged(const QString &arg1);
+
+    void on_ioctlCodeLineEdit_editingFinished();
+
+
 private:
     Ui::MainWindow *ui;
     void FillTableOfObjects(dir_obj_pairs &names_of_dir_objects);
     void FillOpenedDevicesTable(opened_device_pairs &hanldes_and_names);
-    void FindObject();
     void ErrorToOutput();
     bytes_views parse_memory_with_chars(BYTE *mem, unsigned long long size);
     void write_hex_to_display();
+    QHexEdit *inHexEdit;
+    QHexEdit *outHexEdit;
+    void HexEditorsSetup();
+    void FindObject();
 };
 #endif // MAINWINDOW_H

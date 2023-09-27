@@ -39,6 +39,19 @@ void MainWindow::FillOpenedDevicesTable(opened_device_pairs &hanldes_and_names){
     }
 }
 
+void MainWindow::HexEditorsSetup(){
+    inHexEdit = new QHexEdit;
+    outHexEdit = new QHexEdit;
+    inHexEdit->setGeometry(10, 400, 600, 300);
+    outHexEdit->setGeometry(610, 400, 600, 300);
+    outHexEdit->setReadOnly(true);
+//    inHexEdit->setReadOnly(false);
+    inHexEdit->setOverwriteMode(false);
+    this->layout()->addWidget(inHexEdit);
+    this->layout()->addWidget(outHexEdit);
+    inHexEdit->show();
+    outHexEdit->show();
+}
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -56,25 +69,14 @@ MainWindow::MainWindow(QWidget *parent)
 //    ui->tableOfObjects->setColumnWidth(1, ui->tableOfObjects->width() / 3);
 
 //    this->write_hex_to_display();
-    QHexEdit *inHexEdit = new QHexEdit;
-    QHexEdit *outHexEdit = new QHexEdit;
-    inHexEdit->setGeometry(0, 400, 600, 300);
-    outHexEdit->setGeometry(600, 400, 600, 300);
-    outHexEdit->setReadOnly(true);
-//    inHexEdit->setReadOnly(false);
-    inHexEdit->setOverwriteMode(false);
-    this->layout()->addWidget(inHexEdit);
-    this->layout()->addWidget(outHexEdit);
-    inHexEdit->show();
-    outHexEdit->show();
-//    QFile file("C:/Users/MtnDew/Projects/ioctl_helper/test_file" );
-//    file.setFileName("C:\\Users\\MtnDew\\Downloads\\QHexEdit_X64\\opengl32sw.dll");
-
+    this->HexEditorsSetup();
 }
 
 MainWindow::~MainWindow()
 {
-    delete(ioctl_hlpr);
+    delete this->inHexEdit;
+    delete this->outHexEdit;
+    delete ioctl_hlpr;
     delete ui;
 }
 
@@ -113,16 +115,10 @@ void MainWindow::FindObject(){
     this->FillTableOfObjects(found_objs);
 }
 
-void MainWindow::on_findDeviceButton_clicked()
-{
-    this->FindObject();
- }
-
 void MainWindow::on_findDeviceLineEdit_returnPressed()
 {
     this->FindObject();
 }
-
 
 void MainWindow::on_CreateDevicePushButton_clicked()
 {
@@ -169,7 +165,6 @@ void MainWindow::on_openedDevicesTableWidget_cellClicked(int row, int column)
     ui->curDeviceLineEdit->setText(name);
     ui->curHandleLineEdit->setText(handle);
 }
-
 
 void MainWindow::on_closeDevicePushButton_clicked()
 {
@@ -239,4 +234,41 @@ void MainWindow::write_hex_to_display(){
 //            ui->hexOutputPlainTextEdit->insertPlainText(QString::fromWCharArray(L"\n"));
 //        }
 //    }
+}
+
+void MainWindow::on_sendIoctlPushButton_clicked()
+{
+    HANDLE handle = 0;
+    DWORD dwIoControlCode = 0;
+    std::wstringstream stream;
+
+    stream << std::hex << ui->curHandleLineEdit->text().toStdWString();
+    stream >> handle;
+    stream.str(L"");
+    stream.clear();
+
+    stream << std::hex << ui->ioctlCodeLineEdit->text().toStdWString();
+    stream >> dwIoControlCode;
+    return;
+//    DeviceIoControl(handle, );
+}
+
+void MainWindow::on_findDeviceLineEdit_textChanged(const QString &arg1)
+{
+    this->FindObject();
+}
+
+void MainWindow::on_ioctlCodeLineEdit_editingFinished()
+{
+    DWORD dwIoControlCode = 0;
+    std::wstringstream stream;
+
+    stream << std::hex << ui->ioctlCodeLineEdit->text().toStdWString();
+    stream >> dwIoControlCode;
+    stream.str(L"");
+    stream.clear();
+
+    stream << std::hex << dwIoControlCode;
+//    std::wstring s = stream.str();
+    ui->ioctlCodeLineEdit->setText(QString::fromWCharArray(stream.str().c_str()));
 }
