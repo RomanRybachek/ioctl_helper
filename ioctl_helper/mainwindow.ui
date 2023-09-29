@@ -59,7 +59,7 @@
    </widget>
    <widget class="QTableWidget" name="openedDevicesTableWidget">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -84,9 +84,9 @@
     <property name="geometry">
      <rect>
       <x>730</x>
-      <y>140</y>
+      <y>180</y>
       <width>321</width>
-      <height>171</height>
+      <height>131</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -100,18 +100,18 @@
      <item>
       <widget class="QTextBrowser" name="outputTextBrowser">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
       </widget>
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>730</x>
       <y>40</y>
-      <width>111</width>
+      <width>164</width>
       <height>52</height>
      </rect>
     </property>
@@ -170,7 +170,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>733</x>
@@ -199,8 +199,8 @@
    <widget class="QFrame" name="frame">
     <property name="geometry">
      <rect>
-      <x>842</x>
-      <y>39</y>
+      <x>730</x>
+      <y>100</y>
       <width>161</width>
       <height>51</height>
      </rect>
@@ -272,6 +272,90 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QWidget" name="verticalLayoutWidget_3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>310</y>
+      <width>160</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_4">
+     <item>
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Input buffer size:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="InBufSizeLineEdit"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="inBufSizePushButton">
+       <property name="text">
+        <string>Create</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="verticalLayoutWidget_4">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>310</y>
+      <width>160</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_5">
+     <item>
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>Output buffer size:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="OutBufSizeLineEdit"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="outBufSizePushButton">
+       <property name="text">
+        <string>Create</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QCheckBox" name="inHexCheckBox">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>310</y>
+      <width>51</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>hex</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="outHexCheckBox">
+    <property name="geometry">
+     <rect>
+      <x>640</x>
+      <y>310</y>
+      <width>41</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>hex</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

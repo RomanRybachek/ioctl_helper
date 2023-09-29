@@ -46,7 +46,7 @@ void MainWindow::HexEditorsSetup(){
     outHexEdit->setGeometry(610, 400, 600, 300);
     outHexEdit->setReadOnly(true);
 //    inHexEdit->setReadOnly(false);
-    inHexEdit->setOverwriteMode(false);
+    inHexEdit->setOverwriteMode(true);
     this->layout()->addWidget(inHexEdit);
     this->layout()->addWidget(outHexEdit);
     inHexEdit->show();
@@ -59,16 +59,17 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    this->inSize = 0;
+    this->outSize = 0;
+    this->outBuffer = nullptr;
+    this->inBuffer = nullptr;
+
     ioctl_hlpr = new ioctl_helper();
     this->dir_name = std::wstring(L"\\GLOBAL??");
     this->dir_objs = ioctl_hlpr->enum_directory_objects(this->dir_name);
     this->FillTableOfObjects(this->dir_objs);
     ui->tableOfObjects->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->openedDevicesTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-//    ui->tableOfObjects->setColumnWidth(0, ui->tableOfObjects->width() / 3 * 2);
-//    ui->tableOfObjects->setColumnWidth(1, ui->tableOfObjects->width() / 3);
-
-//    this->write_hex_to_display();
     this->HexEditorsSetup();
 }
 
@@ -78,6 +79,10 @@ MainWindow::~MainWindow()
     delete this->outHexEdit;
     delete ioctl_hlpr;
     delete ui;
+    if (this->inSize)
+        free(this->inBuffer);
+    if (this->outSize)
+        free(this->outBuffer);
 }
 
 void MainWindow::on_tableOfObjects_cellClicked(int row, int column)
@@ -147,9 +152,6 @@ void MainWindow::on_CreateDevicePushButton_clicked()
         QString text(stream.str().c_str());
         ui->curHandleLineEdit->setText(text);
     }
-//    QString new_item = QString::fromWCharArray(new_device.first.c_str());
-//    ui->openedDevicesListWidget->addItem(new_item);
-//    CloseHandle(opened_device);
 }
 
 void MainWindow::ErrorToOutput(){
@@ -250,8 +252,8 @@ void MainWindow::on_sendIoctlPushButton_clicked()
     stream << std::hex << ui->ioctlCodeLineEdit->text().toStdWString();
     stream >> dwIoControlCode;
     QByteArray inBuffer = this->inHexEdit->dataAt(0, -1);
+//    DeviceIoControl(handle, dwIoControlCode, );
     return;
-//    DeviceIoControl(handle, );
 }
 
 void MainWindow::on_findDeviceLineEdit_textChanged(const QString &arg1)
@@ -273,3 +275,46 @@ void MainWindow::on_ioctlCodeLineEdit_editingFinished()
 //    std::wstring s = stream.str();
     ui->ioctlCodeLineEdit->setText(QString::fromWCharArray(stream.str().c_str()));
 }
+
+void MainWindow::realloc_buffers(void **buffer, size_t &buf_size){
+    std::wstring hex_val = toHex<std::wstring>(ui->InBufSizeLineEdit->text().toStdWString());
+    QString dec_val = QString::number(ui->InBufSizeLineEdit->text().toULongLong());
+    size_t size = 0;
+
+    if (ui->inHexCheckBox->isChecked()){
+        ui->InBufSizeLineEdit->setText(QString::fromWCharArray(hex_val.c_str()));
+        size = toDec<std::wstring>(hex_val);
+    }
+    else{
+        ui->InBufSizeLineEdit->setText(dec_val);
+        size = toDec<std::wstring>(dec_val.toStdWString());
+    }
+
+    if (size == 0 && buf_size != 0){
+        free *buffer;
+        *buffer = nullptr;
+        buf_size = 0;
+        return;
+    } // here
+    if (size != 0){
+        size_t last_size = buf_size;
+        *buffer = realloc(*buffer, size);
+        if (size > last_size)
+            memset(*buffer + last_size, 0, size - last_size);
+        buf_size = size;
+    }
+}
+
+void MainWindow::on_inBufSizePushButton_clicked()
+{
+    this->inHexEdit->remove(0, this->inSize);
+    this->realloc_buffers(&this->inBuffer, this->inSize);
+    QByteArray b_array((char*)this->inBuffer, this->inSize);
+    this->inHexEdit->insert(0, b_array);
+}
+
+void MainWindow::on_outBufSizePushButton_clicked()
+{
+    this->realloc_buffers(&this->outBuffer, this->outSize);
+}
+

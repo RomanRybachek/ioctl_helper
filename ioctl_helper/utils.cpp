@@ -1,5 +1,4 @@
-#include <string>
-#include <windows.h>
+#include "utils.h"
 
 extern std::string GetLastErrorAsString()
 {
@@ -24,3 +23,4 @@ extern std::string GetLastErrorAsString()
 
     return message;
 }
+

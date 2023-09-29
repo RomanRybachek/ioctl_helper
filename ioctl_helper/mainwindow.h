@@ -21,10 +21,12 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    dir_obj_pairs dir_objs;
-    std::wstring dir_name;
 
 private slots:
+    void on_outBufSizePushButton_clicked();
+
+    void on_inBufSizePushButton_clicked();
+
     void on_refreshDeviceButton_clicked();
 
     void on_tableOfObjects_cellClicked(int row, int column);
@@ -45,15 +47,23 @@ private slots:
 
 
 private:
-    Ui::MainWindow *ui;
     void FillTableOfObjects(dir_obj_pairs &names_of_dir_objects);
     void FillOpenedDevicesTable(opened_device_pairs &hanldes_and_names);
     void ErrorToOutput();
-    bytes_views parse_memory_with_chars(BYTE *mem, unsigned long long size);
     void write_hex_to_display();
-    QHexEdit *inHexEdit;
-    QHexEdit *outHexEdit;
     void HexEditorsSetup();
     void FindObject();
+    bytes_views parse_memory_with_chars(BYTE *mem, unsigned long long size);
+    void realloc_buffers(void **buffer, size_t &buf_size);
+private:
+    Ui::MainWindow *ui;
+    QHexEdit *inHexEdit;
+    QHexEdit *outHexEdit;
+    dir_obj_pairs dir_objs;
+    std::wstring dir_name;
+    void *inBuffer;
+    size_t inSize;
+    void *outBuffer;
+    size_t outSize;
 };
 #endif // MAINWINDOW_H
