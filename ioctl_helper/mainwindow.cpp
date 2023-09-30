@@ -61,6 +61,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    setWindowTitle("ioctl helper");
     this->inSize = 0;
     this->outSize = 0;
     this->outBuffer = nullptr;
@@ -246,6 +247,8 @@ void MainWindow::on_sendIoctlPushButton_clicked()
     DWORD dwIoControlCode = 0;
     std::wstringstream stream;
 
+    this->update_buffer(&this->inBuffer, this->inSize, *this->inHexEdit);
+
     stream << std::hex << ui->curHandleLineEdit->text().toStdWString();
     stream >> handle;
     stream.str(L"");
@@ -254,7 +257,15 @@ void MainWindow::on_sendIoctlPushButton_clicked()
     stream << std::hex << ui->ioctlCodeLineEdit->text().toStdWString();
     stream >> dwIoControlCode;
     QByteArray inBuffer = this->inHexEdit->dataAt(0, -1);
-//    DeviceIoControl(handle, dwIoControlCode, );
+    bool status = DeviceIoControl(handle, dwIoControlCode, this->inBuffer, this->inSize, this->outBuffer, this->outSize, NULL, NULL);
+
+    if (status == 0)
+        this->ErrorToOutput();
+    else{
+        QByteArray b_array((char*)this->outBuffer, this->outSize);
+        this->outHexEdit->replace(0, this->outSize, b_array);
+    }
+
     return;
 }
 
