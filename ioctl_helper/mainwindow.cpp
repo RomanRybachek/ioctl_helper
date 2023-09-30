@@ -40,15 +40,17 @@ void MainWindow::FillOpenedDevicesTable(opened_device_pairs &hanldes_and_names){
 }
 
 void MainWindow::HexEditorsSetup(){
-    inHexEdit = new QHexEdit;
-    outHexEdit = new QHexEdit;
-    inHexEdit->setGeometry(10, 400, 600, 300);
-    outHexEdit->setGeometry(610, 400, 600, 300);
-    outHexEdit->setReadOnly(true);
-//    inHexEdit->setReadOnly(false);
-    inHexEdit->setOverwriteMode(true);
+    this->inHexEdit = new QHexEdit;
+    this->outHexEdit = new QHexEdit;
+    this->inHexEdit->setGeometry(10, 400, 600, 300);
+    this->outHexEdit->setGeometry(610, 400, 600, 300);
+    this->outHexEdit->setReadOnly(true);
+    this->inHexEdit->setReadOnly(false);
+    this->inHexEdit->setOverwriteMode(true);
     this->layout()->addWidget(inHexEdit);
     this->layout()->addWidget(outHexEdit);
+
+//    connect(this->inHexEdit, SIGNAL(inHexEdit->dataChanged()), this, SLOT(dataChanged()));
     inHexEdit->show();
     outHexEdit->show();
 }
@@ -276,45 +278,70 @@ void MainWindow::on_ioctlCodeLineEdit_editingFinished()
     ui->ioctlCodeLineEdit->setText(QString::fromWCharArray(stream.str().c_str()));
 }
 
-void MainWindow::realloc_buffers(void **buffer, size_t &buf_size){
-    std::wstring hex_val = toHex<std::wstring>(ui->InBufSizeLineEdit->text().toStdWString());
-    QString dec_val = QString::number(ui->InBufSizeLineEdit->text().toULongLong());
-    size_t size = 0;
+void MainWindow::realloc_buffers(void **buffer, size_t &buf_size, QLineEdit &lineEdit, QCheckBox &checkbox){
+    std::wstring hex_val = toHex<std::wstring>(lineEdit.text().toStdWString());
+    QString dec_val = QString::number(lineEdit.text().toULongLong());
+    size_t new_size = 0;
 
-    if (ui->inHexCheckBox->isChecked()){
-        ui->InBufSizeLineEdit->setText(QString::fromWCharArray(hex_val.c_str()));
-        size = toDec<std::wstring>(hex_val);
+    if (checkbox.isChecked()){
+        lineEdit.setText(QString::fromWCharArray(hex_val.c_str()));
+        new_size = hexToDec<std::wstring>(hex_val);
     }
     else{
-        ui->InBufSizeLineEdit->setText(dec_val);
-        size = toDec<std::wstring>(dec_val.toStdWString());
+        lineEdit.setText(dec_val);
+        new_size = toDec<std::wstring>(dec_val.toStdWString());
     }
 
-    if (size == 0 && buf_size != 0){
-        free *buffer;
-        *buffer = nullptr;
+    if (buf_size == 0 && new_size == 0)
+        return;
+
+    if (buf_size != 0 && new_size == 0){
+        free(*buffer);
         buf_size = 0;
         return;
-    } // here
-    if (size != 0){
-        size_t last_size = buf_size;
-        *buffer = realloc(*buffer, size);
-        if (size > last_size)
-            memset(*buffer + last_size, 0, size - last_size);
-        buf_size = size;
     }
+
+    void *new_buf = malloc(new_size);
+
+    memset(new_buf, 0, new_size);
+
+    size_t size_to_cpy = 0;
+
+    size_to_cpy = new_size < buf_size ? new_size : buf_size;
+
+    memcpy(new_buf, *buffer, size_to_cpy);
+
+    if (buf_size != 0)
+        free(*buffer);
+
+    buf_size = new_size;
+    *buffer = new_buf;
+}
+
+void MainWindow::update_buffer(void **buf, const size_t &buf_size, QHexEdit &hexedit){
+    QByteArray b_array = hexedit.data();
+    const char* data_to_cpy = b_array.constData();
+
+    memcpy(*buf, data_to_cpy, buf_size);
 }
 
 void MainWindow::on_inBufSizePushButton_clicked()
 {
+    this->update_buffer(&this->inBuffer, this->inSize, *this->inHexEdit);
     this->inHexEdit->remove(0, this->inSize);
-    this->realloc_buffers(&this->inBuffer, this->inSize);
+    this->realloc_buffers(&this->inBuffer, this->inSize, *ui->InBufSizeLineEdit, *ui->inHexCheckBox);
+
     QByteArray b_array((char*)this->inBuffer, this->inSize);
     this->inHexEdit->insert(0, b_array);
 }
 
 void MainWindow::on_outBufSizePushButton_clicked()
 {
-    this->realloc_buffers(&this->outBuffer, this->outSize);
+    this->update_buffer(&this->outBuffer, this->outSize, *this->outHexEdit);
+    this->outHexEdit->remove(0, this->outSize);
+    this->realloc_buffers(&this->outBuffer, this->outSize, *ui->OutBufSizeLineEdit, *ui->outHexCheckBox);
+
+    QByteArray b_array((char*)this->outBuffer, this->outSize);
+    this->outHexEdit->insert(0, b_array);
 }
 

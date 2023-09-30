@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QListWidgetItem>
+#include <QCheckBox>
 #include "ioctl_helper.h"
 #include "qhexedit/qhexedit.h"
 
@@ -54,7 +55,10 @@ private:
     void HexEditorsSetup();
     void FindObject();
     bytes_views parse_memory_with_chars(BYTE *mem, unsigned long long size);
-    void realloc_buffers(void **buffer, size_t &buf_size);
+    void realloc_buffers(void **buffer, size_t &buf_size, QLineEdit &lineEdit, QCheckBox &checkbox);
+    void inHexEditDataChangedSlot();
+    void dataChanged();
+    void update_buffer(void **buf, const size_t &buf_size, QHexEdit &hexedit);
 private:
     Ui::MainWindow *ui;
     QHexEdit *inHexEdit;

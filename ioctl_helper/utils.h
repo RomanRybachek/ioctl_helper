@@ -18,6 +18,17 @@ extern std::wstring toHex(T val){
 }
 
 template <typename T>
+extern size_t hexToDec(T val){
+
+    size_t ret;
+    std::wstringstream stream;
+
+    stream << std::hex << val;
+    stream >> ret;
+    return ret;
+}
+
+template <typename T>
 extern size_t toDec(T val){
 
     size_t ret;
