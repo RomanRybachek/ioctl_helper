@@ -43,7 +43,11 @@ dir_obj_pairs ioctl_helper::enum_directory_objects(std::wstring dir_name)
 
     InitializeObjectAttributes(&obj_attr, &dir_str, 0, NULL, NULL);
 
-    this->NtOpenDirectoryObject(&dir_handle, 0x0001, &obj_attr);
+    NTSTATUS status = this->NtOpenDirectoryObject(&dir_handle, 0x0001, &obj_attr);
+    if (dir_handle == 0){
+        SetLastError(110);
+        return dir_vector;
+    }
 
     NTSTATUS query_status 						= STATUS_MORE_ENTRIES;
     ULONG dir_buffer_size 						= 0x100;

@@ -47,6 +47,10 @@ private slots:
     void on_ioctlCodeLineEdit_editingFinished();
 
 
+    void on_chgDirLineEdit_returnPressed();
+
+    void on_changeDirButton_clicked();
+
 private:
     void FillTableOfObjects(dir_obj_pairs &names_of_dir_objects);
     void FillOpenedDevicesTable(opened_device_pairs &hanldes_and_names);

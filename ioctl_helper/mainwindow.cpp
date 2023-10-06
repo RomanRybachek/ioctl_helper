@@ -42,14 +42,12 @@ void MainWindow::FillOpenedDevicesTable(opened_device_pairs &hanldes_and_names){
 void MainWindow::HexEditorsSetup(){
     this->inHexEdit = new QHexEdit;
     this->outHexEdit = new QHexEdit;
-    this->inHexEdit->setGeometry(10, 400, 600, 300);
-    this->outHexEdit->setGeometry(610, 400, 600, 300);
     this->outHexEdit->setReadOnly(true);
     this->inHexEdit->setReadOnly(false);
     this->inHexEdit->setOverwriteMode(true);
-    this->layout()->addWidget(inHexEdit);
-    this->layout()->addWidget(outHexEdit);
 
+    ui->horizontalLayout_10->addWidget(inHexEdit);
+    ui->horizontalLayout_10->addWidget(outHexEdit);
 //    connect(this->inHexEdit, SIGNAL(inHexEdit->dataChanged()), this, SLOT(dataChanged()));
     inHexEdit->show();
     outHexEdit->show();
@@ -68,12 +66,13 @@ MainWindow::MainWindow(QWidget *parent)
     this->inBuffer = nullptr;
 
     ioctl_hlpr = new ioctl_helper();
-    this->dir_name = std::wstring(L"\\GLOBAL??");
+    this->dir_name = ui->chgDirLineEdit->text().toStdWString();
     this->dir_objs = ioctl_hlpr->enum_directory_objects(this->dir_name);
     this->FillTableOfObjects(this->dir_objs);
     ui->tableOfObjects->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->openedDevicesTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     this->HexEditorsSetup();
+    ui->findDeviceLineEdit->setFocus();
 }
 
 MainWindow::~MainWindow()
@@ -92,15 +91,18 @@ void MainWindow::on_tableOfObjects_cellClicked(int row, int column)
 {
     if (column == 0)
     {
-        QString text = QString("\\\\.\\") + ui->tableOfObjects->item(row, column)->text();
+        QString text = 	QString("\\\\.\\GLOBALROOT") + \
+                        ui->chgDirLineEdit->text() + \
+                        QString("\\") + \
+                        ui->tableOfObjects->item(row, column)->text();
         ui->curDeviceLineEdit->setText(text);
     }
 }
 
 void MainWindow::on_refreshDeviceButton_clicked()
 {
-    this->dir_name = std::wstring(L"\\GLOBAL??");
     this->dir_objs = ioctl_hlpr->enum_directory_objects(this->dir_name);
+    ErrorToOutput();
     this->FillTableOfObjects(this->dir_objs);
 }
 
@@ -160,7 +162,8 @@ void MainWindow::on_CreateDevicePushButton_clicked()
 void MainWindow::ErrorToOutput(){
     std::string last_error = GetLastErrorAsString();
     QString text(last_error.c_str());
-    ui->outputTextBrowser->append(text);
+    if (text.length() != 0)
+        ui->outputTextBrowser->append(text);
 }
 
 void MainWindow::on_openedDevicesTableWidget_cellClicked(int row, int column)
@@ -354,5 +357,17 @@ void MainWindow::on_outBufSizePushButton_clicked()
 
     QByteArray b_array((char*)this->outBuffer, this->outSize);
     this->outHexEdit->insert(0, b_array);
+}
+
+void MainWindow::on_chgDirLineEdit_returnPressed()
+{
+    this->dir_name = ui->chgDirLineEdit->text().toStdWString();
+    this->on_refreshDeviceButton_clicked();
+}
+
+void MainWindow::on_changeDirButton_clicked()
+{
+    this->dir_name = ui->chgDirLineEdit->text().toStdWString();
+    this->on_refreshDeviceButton_clicked();
 }
 
