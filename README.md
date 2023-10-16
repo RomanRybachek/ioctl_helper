@@ -21,3 +21,5 @@ Communication with several objects: <br/>
 
 ## Links:
 QHexEdit2: https://github.com/Simsys/qhexedit2
+## Download:
+https://github.com/RomanRybachek/ioctl_helper/releases
