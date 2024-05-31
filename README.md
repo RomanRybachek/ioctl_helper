@@ -7,10 +7,6 @@ Usage: <br/>
 
 <img src="https://github.com/RomanRybachek/ioctl_helper/blob/main/git_resources/main.gif" alt="drawing" width="500"/>
 
-Searching by object: <br/>
-
-<img src="https://github.com/RomanRybachek/ioctl_helper/blob/main/git_resources/devices.gif" alt="drawing" width="500"/>
-
 Viewing different directories: <br/>
 
 <img src="https://github.com/RomanRybachek/ioctl_helper/blob/main/git_resources/dirs.gif" alt="drawing" width="500"/>
